@@ -9,6 +9,11 @@
   margin: 0 7.5px 15px;
   overflow: hidden;
 }
+
+.large {
+  height: 380px;
+}
+
 .menu-item:first-child {
   margin-right: 7.5px;
 }
