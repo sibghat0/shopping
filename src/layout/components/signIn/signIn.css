@@ -2,9 +2,10 @@
   width: 430px;
   display: flex;
   flex-direction: column;
+  text-transform: uppercase;
 }
 
-.sign-in .title {
+.sign-in h2 {
   margin: 10px 0;
 }
 

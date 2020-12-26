@@ -5,11 +5,14 @@ import Homepage from "./layout/pages/homepage/homepage";
 import Shop from "./layout/pages/shop/shop";
 import Header from "./layout/components/header/header";
 import Sign from "./layout/pages/signIn-signUp/signIn-signUp";
-import { auth } from "../src/layout/components/config/firebase";
+import {
+  auth,
+  createUserProfileDocument,
+} from "../src/layout/components/config/firebase";
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       currentUser: null,
@@ -19,10 +22,22 @@ class App extends React.Component {
   unSubscriseFromAuth = null;
 
   componentDidMount() {
-    this.unSubscriseFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({ currentUser: user });
-
-      console.log(user);
+    this.unSubscriseFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        console.log(userAuth);
+        const userRef = await createUserProfileDocument(userAuth);
+        console.log(userRef);
+        userRef.onSnapshot((snap) => {
+          this.setState({
+            currentUser: {
+              id: snap.id,
+              ...snap.data(),
+            },
+          });
+        });
+      } else {
+        this.setState({ currentUser: null });
+      }
     });
   }
 
